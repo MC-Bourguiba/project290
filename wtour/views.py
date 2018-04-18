@@ -11,14 +11,13 @@ import json
 
 # Create your views here.
 
-
+from .forms import NumForm
 
 x = 10
 ncou = 2
 ncon = 2
 budget = 1000
 duration = 40
-origin = 'SFO'
 list_airports = None
 matrix = None
 def poll_state(request):
@@ -56,15 +55,25 @@ def index(request):
             'task_id':job_id,
         }
         return render(request,"show_t.html",context)
-    elif 'n' in request.GET:
-        ncou = int(request.GET['n'])
-        list_airports = choose_countries(origin, ncou, ncon)
-        job = find_best_travel.delay(list_airports,duration,ncou)
-        print(job.id)
-        return HttpResponseRedirect(reverse('index') + '?job=' + job.id)
-    else:
 
-        return HttpResponse("ok1")
+    elif request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NumForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            n = form.cleaned_data['cities']
+            origin = form.cleaned_data['departure']
+            if type(origin) != str:
+                raise ValidationError(_('Invalid value'), code='invalid')
+            list_airports = choose_countries(origin, ncou, ncon)
+            job = find_best_travel.delay(list_airports,duration,ncou)
+            print(job.id)
+            return HttpResponseRedirect(reverse('index') + '?job=' + job.id)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NumForm()
+    return render(request, 'post_form.html', {'form': form})
 
 def test(request):
     global  matrix,list_airports,duration,origin

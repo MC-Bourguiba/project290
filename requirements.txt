@@ -1,4 +1,4 @@
-lamadeus==0.1.2
+amadeus==0.1.2
 amqp==1.4.9
 anyjson==0.3.3
 apiwrapper==0.1.8
