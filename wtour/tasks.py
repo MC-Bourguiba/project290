@@ -144,4 +144,4 @@ def my_task(self):
 
 def convert(city):
     airport_code = pd.read_csv('static/large_airports.csv', keep_default_na=False)
-    return airport_code[airport_code['iata_code'] == city]['name']
+    return airport_code[airport_code['iata_code'] == city]['name'].values[0]

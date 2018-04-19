@@ -77,12 +77,14 @@ def index(request):
 def test(request):
     global  matrix,list_airports,duration,origin
     test,cost = compute_optimal_tour(matrix,list_airports)
-    cities = []
+    cities = ''
     for city in test:
-        cities.append(convert(city))
-    cities.append(convert(origin))
+        cities += str(convert(city))
+        cities += ' -> '
+    cities += str(convert(origin))
+    print(cities)
     result = {
-            'test':str(cities),
+            'test':cities,
             'cost':str(cost),
     }
     return render(request, "test.html", result)
