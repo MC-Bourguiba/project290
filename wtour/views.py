@@ -20,6 +20,7 @@ budget = 1000
 duration = 40
 list_airports = None
 matrix = None
+
 def poll_state(request):
     """ A view to report the progress to the user """
     data = 'Fail'
@@ -32,8 +33,6 @@ def poll_state(request):
             print(len(data))
             if len(data) == len(list_airports):
                 matrix = np.array(data)
-
-
         else:
             data = 'No task_id in the request'
     else:
@@ -78,4 +77,13 @@ def index(request):
 def test(request):
     global  matrix,list_airports,duration,origin
     test,cost = compute_optimal_tour(matrix,list_airports)
-    return HttpResponse("itinerary : " + str(test + [origin]) + " cost : "+str(cost)+"$")
+    cities = []
+    for city in test:
+        cities.append(convert(city))
+    cities.append(convert(origin))
+    result = {
+            'test':str(cities),
+            'cost':str(cost),
+    }
+    return render(request, "test.html", result)
+
