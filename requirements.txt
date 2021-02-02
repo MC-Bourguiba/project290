@@ -4,7 +4,7 @@ anyjson==0.3.3
 apiwrapper==0.1.8
 appnope==0.1.0
 billiard==3.3.0.23
-bleach==1.5.0
+bleach==3.3.0
 boto==2.48.0
 boto3==1.6.11
 botocore==1.9.11
